@@ -1,0 +1,71 @@
+repos:
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v4.3.0
+      hooks:
+        - id: check-added-large-files
+        - id: check-merge-conflict
+        - id: check-json
+          exclude_types: [jupyter]
+        - id: check-yaml
+        - id: trailing-whitespace
+        - id: requirements-txt-fixer
+        - id: pretty-format-json
+          exclude_types:  [jupyter]
+          exclude: ^Pipfile.lock$
+          log_file: logs/pretty-format-json.log
+        - id: end-of-file-fixer
+          exclude_types:  [jupyter]
+          log_file: logs/end-of-file-fixer.log
+
+    -   repo: https://github.com/asottile/reorder_python_imports
+        rev: v3.8.2
+        hooks:
+          - id: reorder-python-imports
+    - repo: https://github.com/asottile/add-trailing-comma
+      rev: v2.2.3
+      hooks:
+        - id: add-trailing-comma
+    -   repo: https://github.com/asottile/pyupgrade
+        rev: v3.3.1
+        hooks:
+        -   id: pyupgrade
+
+
+
+
+    - repo: https://github.com/psf/black
+      rev: 22.12.0
+      hooks:
+        - id: black
+          language_version: python3.10
+          exclude: ^src/legacy
+    - repo: https://github.com/PyCQA/flake8
+      rev: 5.0.4
+      hooks:
+        - id: flake8
+          exclude: legacy/
+          log_file: logs/flake8.log
+
+#    - repo: https://github.com/pre-commit/pygrep-hooks
+#      rev: v1.9.0  # Use the ref you want to point at
+#      hooks:
+#        - id: python-use-type-annotations
+
+
+
+    - repo: local
+      hooks:
+        - id: pylint
+          name: pylint
+          entry: pylint src/ --fail-under 0
+          language: system
+          always_run: true
+          pass_filenames: false
+          args: ['--output-format=parseable:logs/pylint.log']
+
+        - id: pytest-check
+          name: pytest-check
+          entry: pytest tests/tests.py
+          language: system
+          pass_filenames: false
+          always_run: true
