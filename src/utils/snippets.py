@@ -57,6 +57,12 @@ def detect_binary_changes(binary_vec: np1d, ts: np1d) -> (np1d, np1d):
     return ts0, ts1
 
 
+def str2datetime(datestr: str, timestr: str):
+    date = datetime.strptime(datestr, "%m-%d-%Y")
+    time = datetime.strptime(timestr, "%H:%M:%S")
+    ts = datetime(date.year, date.month, date.day, time.hour, time.minute, time.second)
+    return ts
+
 def move_column(df: pd.DataFrame, cols: list[str], mode: str = "first") -> pd.DataFrame:
     """
     Change order of several DF columns at once
